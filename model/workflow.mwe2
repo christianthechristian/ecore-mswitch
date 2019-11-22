@@ -1,0 +1,35 @@
+module generate
+
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import tools.mdsd.ecoreworkflow.mwe2lib.bean.EclipseRCPSupportingStandaloneSetup
+import tools.mdsd.ecoreworkflow.mwe2lib.component.GapPatternPostProcessor
+import de.christianvr.ecore.mswitch.mwe2lib.component.MswitchGenerator
+
+var workspaceRoot = "../../"
+
+Workflow {
+	bean = EclipseRCPSupportingStandaloneSetup {
+		scanClassPath = true
+		platformUri = workspaceRoot
+	}
+
+	component = EcoreGenerator {
+		generateCustomClasses = false
+		generateEdit = false
+		genModel = "platform:/resource/demo2/model/demo2.genmodel"
+		srcPath = "platform:/resource/demo2/src-gen"
+		srcPath = "platform:/resource/demo2/src"
+	}
+	
+	component = GapPatternPostProcessor {
+		folders = {
+			gen = "platform:/resource/demo2/src-gen"
+			src = "platform:/resource/demo2/src"
+		}
+	}	
+	
+	component = MswitchGenerator {
+		genModel = "platform:/resource/demo2/model/demo2.genmodel"
+		destPath = "platform:/resource/demo2/src-gen"
+	}
+}
