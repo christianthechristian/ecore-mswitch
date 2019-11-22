@@ -23,11 +23,12 @@ public class Main {
 	public static void main(String[] args) {
 		Map<String, EObject> eobjects = createSomeEObjects();
 		
-		List<DemoCase<String>> demoCases = new LinkedList<>();
+		List<DemoCase<? extends Object>> demoCases = new LinkedList<>();
 		demoCases.add(new ParentFallback());
 		demoCases.add(new EasySyntax());
 		demoCases.add(new NullBehaviour());
 		demoCases.add(new EmptySwitch());
+		demoCases.add(new Merging());
 
 		demoCases.forEach((demo) -> {			
 			demo.printEvaluation(eobjects);
@@ -189,6 +190,82 @@ public class Main {
 		protected boolean test() {
 			EObject probe = Demo2Factory.eINSTANCE.createRouter();
 			return buildNewSwitch().doSwitch(probe).contentEquals("router");
+		}
+		
+	}
+	
+	private static class Merging extends DemoCase<Integer> {
+		
+		public Merging() {
+			super("It is easy to merge new switches into each other.");
+		}
+		
+		@Override
+		protected Demo2Switch<Integer> buildOldSwitch() {
+			Demo2Switch<Integer> routerCosts = new Demo2Switch<Integer>() {
+				@Override
+				public Integer caseRouter(Router object) {
+					return 1000;
+				}
+				
+				@Override
+				public Integer defaultCase(EObject object) {
+					return 0;
+				}
+			};
+			
+			Demo2Switch<Integer> serverCosts = new Demo2Switch<Integer>() {
+				@Override
+				public Integer caseServer(Server object) {
+					return 2000;
+				}
+				
+				@Override
+				public Integer defaultCase(EObject object) {
+					return 0;
+				}
+			};
+			
+			return new Demo2Switch<Integer>() {
+				@Override
+				public Integer caseServer(Server object) {
+					return serverCosts.doSwitch(object);
+				}
+				
+				@Override
+				public Integer caseRouter(Router object) {
+					return routerCosts.doSwitch(object);
+				}
+				
+				@Override
+				public Integer defaultCase(EObject object) {
+					return routerCosts.defaultCase(object); // manually resolving the conflict
+				}
+			};
+			
+		}
+
+		@Override
+		protected Demo2ManualSwitch<Integer> buildNewSwitch() {
+			Demo2ManualSwitch<Integer> routerCosts = new Demo2ManualSwitch<Integer>()
+					.caseRouter(r -> 1000)
+					.defaultCase(d -> 0);
+			Demo2ManualSwitch<Integer> serverCosts = new Demo2ManualSwitch<Integer>()
+					.defaultCase(d -> 0)
+					.caseServer(s -> 2000);
+			
+			return new Demo2ManualSwitch<Integer>()
+					.merge(routerCosts)
+					.merge(serverCosts); // last write wins
+		}
+
+		@Override
+		protected boolean test() {
+			EObject router = Demo2Factory.eINSTANCE.createRouter();
+			EObject server = Demo2Factory.eINSTANCE.createServer();
+			EObject location = Demo2Factory.eINSTANCE.createLocation();
+			Demo2ManualSwitch<Integer> newSwitch = buildNewSwitch();
+			return 3000 == (newSwitch.doSwitch(router) + newSwitch.doSwitch(server) + newSwitch.doSwitch(location));
 		}
 		
 	}

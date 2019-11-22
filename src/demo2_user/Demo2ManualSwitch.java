@@ -83,7 +83,18 @@ public class Demo2ManualSwitch<T> extends ManualSwitch<T> {
 		}
 		return applyDefaultCase(eObject);
 	}
-
+	
+	public Demo2ManualSwitch<T> merge(Demo2ManualSwitch<T> other) {
+		if (other.caseLocation != null) this.caseLocation = other.caseLocation;
+		if (other.caseNetworkingDevice != null) this.caseNetworkingDevice = other.caseNetworkingDevice;
+		if (other.casePhysicalDevice != null) this.casePhysicalDevice = other.casePhysicalDevice;
+		if (other.casePort != null) this.casePort = other.casePort;
+		if (other.caseRouter != null) this.caseRouter = other.caseRouter;
+		if (other.caseServer != null) this.caseServer = other.caseServer;
+		if (other.defaultCase != null) this.defaultCase = other.defaultCase;
+		return this;
+	}
+	
 	public Demo2ManualSwitch<T> caseLocation(Function<Location, T> then) {
 		this.caseLocation = then;
 		return this; // builder pattern
