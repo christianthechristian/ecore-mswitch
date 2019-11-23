@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mswitch
+Bundle-SymbolicName: de.christianvr.ecore.mswitch
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.christianvr.ecore.mswitch.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.13.400",
+ org.eclipse.emf.mwe.core;bundle-version="1.4.0",
+ org.eclipse.emf.codegen.ecore;bundle-version="2.18.0",
+ org.eclipse.xtext.xbase.lib;bundle-version="2.18.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Automatic-Module-Name: de.christianvr.ecore.mswitch
+Bundle-ActivationPolicy: lazy
+Export-Package: de.christianvr.ecore.mswitch.mwe2lib.component
