@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="demo2" nsURI="http://www.example.org/demo2" nsPrefix="demo2">
+  <eClassifiers xsi:type="ecore:EClass" name="NetworkingDevice" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ports" lowerBound="1" upperBound="-1"
+        eType="#//Port" containment="true" eOpposite="#//Port/belongs_to"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Port">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="speed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1000"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connected_to" eType="#//Port"
+        eOpposite="#//Port/connected_from"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connected_from" eType="#//Port"
+        eOpposite="#//Port/connected_to"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="belongs_to" lowerBound="1"
+        eType="#//NetworkingDevice" eOpposite="#//NetworkingDevice/ports"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Router" eSuperTypes="#//NetworkingDevice #//PhysicalDevice"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Server" eSuperTypes="#//NetworkingDevice #//PhysicalDevice">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PhysicalDevice" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="location" lowerBound="1"
+        eType="#//Location"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Location">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>
