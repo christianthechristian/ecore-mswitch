@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Demo2_user
+Bundle-SymbolicName: demo2_user
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: demo2_user
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.18.0",
+ demo2;bundle-version="0.1.0"
